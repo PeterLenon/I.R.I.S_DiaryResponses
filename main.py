@@ -4,7 +4,6 @@ from datetime import datetime
 
 def load_and_write_data(read_filepath, write_filepath):
     df = pd.read_excel(read_filepath)
-    # print(df.head())
     to_keep = ['StartDate', 'RecipientLastName', 'RecipientFirstName', 'Q2', 'Q3_1', 'Q16', 'Q4', 'Q7', 'Q8', 'Q9',
                'Q10', 'Q11', 'Q12', 'Q13']
     df = df[to_keep]
