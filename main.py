@@ -1,4 +1,9 @@
+import matplotlib.dates
 import pandas as pd
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+from datetime import datetime
+import plotly.graph_objects as go
 
 def load_and_write_data(read_filepath, write_filepath):
     df = pd.read_excel(read_filepath)
@@ -53,12 +58,34 @@ def load_and_write_data(read_filepath, write_filepath):
         for row in dataframe.index:
             dataframe['Activity and Occasion'][row] = '' if dataframe['Q9'][row] != 'Yes' else ('Activity: ' + (dataframe['Q11'][row] if dataframe['Q10'][row] == 'Others, please specify:' else dataframe['Q10'][row]) + '\n' + 'Occasion: ' + dataframe['Q2'][row])
 
+    def time_to_ikigai_stats(dataframe):
+        ap_x_values = []
+        ap_y_values = []
+        in_x_values = []
+        in_y_values = []
+        for row in dataframe.index:
+            if row != 0:
+                if dataframe['Appropriate time to use IRIS'][row] != "":
+                    ap_x_values.append(datetime.combine(datetime.today(), dataframe['Appropriate time to use IRIS'][row]))
+                    ap_y_values.append(dataframe['IKIGAI level to use IRIS'][row])
+
+                if dataframe['Inappropriate time to use IRIS'][row] != "":
+                    in_x_values.append(datetime.combine(datetime.today(), dataframe['Inappropriate time to use IRIS'][row]))
+                    in_y_values.append(dataframe['IKIGAI level to not use IRIS'][row])
+
+        plt.scatter(ap_x_values, ap_y_values)
+        plt.scatter(in_x_values, in_y_values)
+        plt.grid()
+        plt.gcf().autofmt_xdate()
+        plt.show()
+
 
     things_To_or_Not(df)
     graded_IKIGAI_activities(df)
     IKIGAI_to_use_IRIS(df)
     appropriate_time_to_use_IRIS(df)
     activity_and_occasion(df)
+    time_to_ikigai_stats(df)
 
     df.to_excel(write_filepath)
 
