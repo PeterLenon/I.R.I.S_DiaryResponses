@@ -1,9 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 from datetime import datetime
-from PIL import Image
-import PIL
-
 
 def load_and_write_data(read_filepath, write_filepath):
     df = pd.read_excel(read_filepath)
@@ -27,8 +24,6 @@ def load_and_write_data(read_filepath, write_filepath):
     df['Appropriate time to use IRIS'] = ""
     df['Inappropriate time to use IRIS'] = ""
     df['Activity and Occasion'] = ""
-
-
 
     def things_To_or_Not(dataframe):
         for row in dataframe.index:
@@ -119,12 +114,6 @@ def load_and_write_data(read_filepath, write_filepath):
         plt.savefig('most_and_least_utilised_activity.png')
         plt.show()
 
-
-
-
-
-
-
     things_To_or_Not(df)
     graded_IKIGAI_activities(df)
     IKIGAI_to_use_IRIS(df)
@@ -134,12 +123,11 @@ def load_and_write_data(read_filepath, write_filepath):
     activity_vs_time(df)
     most_and_least_utilised_activity(df)
 
-
     df.to_excel(write_filepath)
 
 
 analytics_read_file = "C:\\Users\gosho\OneDrive\Desktop\R-HouseFiles\Expert+Panel-+Life+with+IRIS_July+10,+2023_11.13\Expert Panel- Life with IRIS_July 10, 2023_11.13.xlsx"
-analystics_write_file = "C:\\Users\gosho\OneDrive\Desktop\R-HouseFiles\Expert+Panel-+Life+with+IRIS_July+10,+2023_11.13\Expert Panel- processed_July 10.xlsx"
-load_and_write_data(analytics_read_file, analystics_write_file)
+analytics_write_file = "C:\\Users\gosho\OneDrive\Desktop\R-HouseFiles\Expert+Panel-+Life+with+IRIS_July+10,+2023_11.13\Expert Panel- processed_July 10.xlsx"
+load_and_write_data(analytics_read_file, analytics_write_file)
 
 
