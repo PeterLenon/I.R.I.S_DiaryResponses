@@ -88,7 +88,7 @@ def load_and_write_data(read_filepath, write_filepath):
         for row in dataframe.index:
             if row != 0 and dataframe['Q9'][row] == 'Yes':
                 x_activity_labels.append(dataframe['Q10'][row] if dataframe['Q10'][row] in ['Reflection activity', 'General chat about ikigai', 'Photograph activity'] else 'Other')
-                y_time_labels.append(datetime.combine(datetime.today(), dataframe['Inappropriate time to use IRIS'][row]))
+                y_time_labels.append(datetime.combine(datetime.today(), dataframe['StartDate'][row].time()))
 
         plt.scatter(x_activity_labels, y_time_labels)
         plt.grid()
@@ -96,6 +96,31 @@ def load_and_write_data(read_filepath, write_filepath):
         plt.title('Time vs preferred activity')
         plt.savefig('Time vs preferred activity.png')
         plt.show()
+
+    def most_and_least_utilised_activity(dataframe):
+        activity_freq_dict = {'Reflection activity': 0, 'General chat about ikigai': 0, 'Photograph activity':0 , 'Other': 0}
+        for row in dataframe.index:
+            if dataframe['Q10'][row] == 'Reflection activity':
+                activity_freq_dict['Reflection activity'] = activity_freq_dict['Reflection activity']+1
+            elif dataframe['Q10'][row] == 'General chat about ikigai':
+                activity_freq_dict['General chat about ikigai'] = activity_freq_dict['General chat about ikigai'] + 1
+            elif dataframe['Q10'][row] == 'Photograph activity':
+                activity_freq_dict['Photograph activity'] = activity_freq_dict['Photograph activity'] + 1
+            elif dataframe['Q10'][row] == 'Others, please specify:':
+                activity_freq_dict['Other'] = activity_freq_dict['Other'] + 1
+
+        y = []
+        activity_labels = []
+        for activity_label in activity_freq_dict:
+            activity_labels.append(activity_label)
+            y.append(activity_freq_dict[activity_label])
+
+        plt.pie(y, labels = activity_labels)
+        plt.savefig('most_and_least_utilised_activity.png')
+        plt.show()
+
+
+
 
 
 
@@ -107,6 +132,7 @@ def load_and_write_data(read_filepath, write_filepath):
     activity_and_occasion(df)
     time_to_ikigai_plots(df)
     activity_vs_time(df)
+    most_and_least_utilised_activity(df)
 
 
     df.to_excel(write_filepath)
