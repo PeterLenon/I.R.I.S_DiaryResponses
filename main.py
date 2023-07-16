@@ -113,6 +113,11 @@ def load_and_write_data(read_filepath, write_filepath):
         plt.savefig('most_and_least_utilised_activity.png')
         plt.show()
 
+    def IRIS_activity_vs_participant_occasion(dataframe):
+        for row in dataframe.index:
+            2+2
+
+
     things_To_or_Not(df)
     graded_IKIGAI_activities(df)
     IKIGAI_to_use_IRIS(df)
