@@ -125,8 +125,8 @@ def load_and_write_data(read_filepath, write_filepath):
     df.to_excel(write_filepath)
 
 
-analytics_read_file = "C:\\Users\gosho\OneDrive\Desktop\R-HouseFiles\Expert+Panel-+Life+with+IRIS_July+10,+2023_11.13\Expert Panel- Life with IRIS_July 10, 2023_11.13.xlsx"
-analytics_write_file = "C:\\Users\gosho\OneDrive\Desktop\R-HouseFiles\Expert+Panel-+Life+with+IRIS_July+10,+2023_11.13\Expert Panel- processed_July 10.xlsx"
+analytics_read_file = "C:\\Users\gosho\OneDrive\Desktop\R-HouseFiles\Expert+Panel-+Life+with+IRIS_July+17,+2023_09.50\Expert Panel- Life with IRIS_July 17, 2023_09.50.xlsx"
+analytics_write_file = "C:\\Users\gosho\OneDrive\Desktop\R-HouseFiles\Expert+Panel-+Life+with+IRIS_July+17,+2023_09.50\Expert Panel- Life with IRIS_July 17-processed.xlsx"
 load_and_write_data(analytics_read_file, analytics_write_file)
 
 
