@@ -1,6 +1,11 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+from matplotlib import pyplot as plt, dates
 from datetime import datetime
+import numpy as np
+import random
+import seaborn as sns
+import matplotlib.dates as md
 
 def load_and_write_data(read_filepath, write_filepath):
     df = pd.read_excel(read_filepath)
@@ -67,28 +72,53 @@ def load_and_write_data(read_filepath, write_filepath):
                     in_x_values.append(datetime.combine(datetime.today(), dataframe['Inappropriate time to use IRIS'][row]))
                     in_y_values.append(dataframe['IKIGAI level to not use IRIS'][row])
 
-        plt.scatter(ap_x_values, ap_y_values)
-        plt.scatter(in_x_values, in_y_values)
+        fig, ax = plt.subplots()
+        ax.scatter(ap_x_values, ap_y_values)
+        ax.scatter(in_x_values, in_y_values)
         plt.grid()
         plt.gcf().autofmt_xdate()
-        plt.title('Appropriate and Inappropriate times vs Ikigai Level')
+        ax.xaxis.set_major_formatter(dates.DateFormatter('%H:%M'))
+        plt.ylabel('Effect on IKIGAI %')
+        plt.title('Appropriate(blue) /Inappropriate(orange) times vs Ikigai Level')
         plt.savefig('Appropriate and Inappropriate times vs Ikigai Level.png')
         plt.show()
 
-    def activity_vs_time(dataframe):
-        x_activity_labels = []
-        y_time_labels = []
+
+    def IRIS_activity_vs_time_scatterplot(dataframe):
+        y_activity_labels = []
+        x_time_labels = []
 
         for row in dataframe.index:
             if row != 0 and dataframe['Q9'][row] == 'Yes':
-                x_activity_labels.append(dataframe['Q10'][row] if dataframe['Q10'][row] in ['Reflection activity', 'General chat about ikigai', 'Photograph activity'] else 'Other')
-                y_time_labels.append(datetime.combine(datetime.today(), dataframe['StartDate'][row].time()))
+                y_activity_labels.append(dataframe['Q10'][row] if dataframe['Q10'][row] in ['Reflection activity', 'General chat about ikigai', 'Photograph activity'] else 'Other')
+                x_time_labels.append(datetime.combine(datetime.today(), dataframe['StartDate'][row].time()))
 
-        plt.scatter(x_activity_labels, y_time_labels)
-        plt.grid()
+        fig, ax = plt.subplots()
+        ax.scatter(x_time_labels, y_activity_labels)
+        plt.tick_params(rotation=45)
         plt.gcf().autofmt_xdate()
-        plt.title('Time vs preferred activity')
-        plt.savefig('Time vs preferred activity.png')
+        ax.xaxis.set_major_formatter(dates.DateFormatter('%H:%M'))
+        plt.grid()
+        plt.savefig('IRIS_activity_vs_time.png')
+        plt.show()
+
+    def IRIS_activity_vs_ikigai_level(dataframe):
+        y_activity_labels = []
+        x_corresponding_ikigai_level = []
+
+        for row in dataframe.index:
+            if dataframe['Q9'][row] == 'Yes':
+                Q10list = dataframe['Q10'][row].split(',')
+                for activity in Q10list:
+                    if activity != ' please specify:':
+                        y_activity_labels.append(activity)
+                        x_corresponding_ikigai_level.append(dataframe['IKIGAI level to use IRIS'][row])
+
+        plt.scatter(x_corresponding_ikigai_level, y_activity_labels)
+        plt.xlabel('How much current activity affects IKIGAI %')
+        plt.grid()
+        plt.savefig('IRIS_activity_vs_ikigai_level.png')
+        plt.title('Appropriate IRIS activity vs corresponding IKIGAI Level')
         plt.show()
 
     def most_and_least_utilised_activity(dataframe):
@@ -110,7 +140,96 @@ def load_and_write_data(read_filepath, write_filepath):
             y.append(activity_freq_dict[activity_label])
 
         plt.pie(y, labels = activity_labels, autopct= '%1.1f%%')
+        plt.title('% Most and Least suggested activity')
         plt.savefig('most_and_least_utilised_activity.png')
+        plt.show()
+
+    def who_are_you_with_vs_IRIS_usecounts_plots(dataframe):
+        yes_person_freq_dict = {'Alone': 0,
+                            'Spouse': 0,
+                            'Children': 0,
+                            'Grandchildren': 0,
+                            'Friends': 0,
+                            'Nurse/Care Partners': 0,
+                            'Others':0
+                            }
+
+        no_person_freq_dict = {'Alone': 0,
+                                'Spouse': 0,
+                                'Children': 0,
+                                'Grandchildren': 0,
+                                'Friends': 0,
+                                'Nurse/Care Partners': 0,
+                                'Others': 0
+                                }
+
+        for row in dataframe.index:
+            Q7list = dataframe['Q7'][row].split(',')
+            if dataframe['Q9'][row] == 'Yes':
+                for key in yes_person_freq_dict:
+                    if key in Q7list:
+                        yes_person_freq_dict[key] = yes_person_freq_dict[key] + 1
+            elif dataframe['Q9'][row] =='No':
+                for key in no_person_freq_dict:
+                    if key in Q7list:
+                        no_person_freq_dict[key] = no_person_freq_dict[key]+1
+
+        plt.bar(yes_person_freq_dict.keys(), yes_person_freq_dict.values(), color='green', width=0.3)
+        plt.title('IRIS use count vs who you are with')
+        plt.grid()
+        plt.tick_params(rotation=45)
+        plt.ylabel('Number of times')
+        plt.savefig('Persons and IRIS_use.png')
+        plt.show()
+
+        plt.bar(no_person_freq_dict.keys(), no_person_freq_dict.values(), color='red', width=0.3)
+        plt.title('no IRIS use vs who you are with')
+        plt.grid()
+        plt.tick_params(rotation=45)
+        plt.ylabel('Number of times')
+        plt.savefig('Persons and NO IRIS_use.png')
+        plt.show()
+
+    def IRIS_activity_vs_who_are_you_with(dataframe):
+        person_to_index_dict = {'Alone': 0,
+                                'Spouse': 1,
+                                'Children': 2,
+                                'Grandchildren': 3,
+                                'Friends': 4,
+                                'Nurse/Care Partners': 5,
+                                'Others': 6
+                                }
+
+        IRIS_activity_to_person_dict = {'Others': [0, 0, 0, 0, 0, 0, 0],
+                                        'Reflection activity': [0, 0, 0, 0, 0, 0, 0],
+                                        'General chat about ikigai': [0, 0, 0, 0, 0, 0, 0],
+                                        'Photograph activity': [0, 0, 0, 0, 0, 0, 0]
+                                        }
+        for row in dataframe.index:
+            if dataframe['Q9'][row] == 'Yes':
+                IRIS_activity_list = dataframe['Q10'][row].split(',')
+                # IRIS_activity_list.pop('please specify:')
+                person_list = dataframe['Q7'][row].split(',')
+
+                for activity in IRIS_activity_list:
+                    if activity != ' please specify:':
+                        LIST = IRIS_activity_to_person_dict[activity]
+                        for person in person_list:
+                            if person != ' please specify:':
+                                index = person_to_index_dict[person]
+                                LIST[index] = LIST[index] + 1
+
+
+        for person in person_to_index_dict.keys():
+            for activity in IRIS_activity_to_person_dict.keys():
+                text = IRIS_activity_to_person_dict[activity][person_to_index_dict[person]]
+                if text != 0:
+                    plt.plot(person, activity,  'go', label='marker only')
+                    plt.annotate(text, (person, activity))
+
+        plt.grid()
+        plt.title('who are you with vs desired IRIS activity')
+        plt.savefig('who are you with vs IRIS activity.png')
         plt.show()
 
     things_To_or_Not(df)
@@ -119,8 +238,12 @@ def load_and_write_data(read_filepath, write_filepath):
     appropriate_time_to_use_IRIS(df)
     activity_and_occasion(df)
     time_to_ikigai_plots(df)
-    activity_vs_time(df)
+    IRIS_activity_vs_time_scatterplot(df)
+    IRIS_activity_vs_ikigai_level(df)
     most_and_least_utilised_activity(df)
+    who_are_you_with_vs_IRIS_usecounts_plots(df)
+    IRIS_activity_vs_who_are_you_with(df)
+
 
     df.to_excel(write_filepath)
 
