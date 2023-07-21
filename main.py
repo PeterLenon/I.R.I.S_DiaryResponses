@@ -73,8 +73,8 @@ def load_and_write_data(read_filepath, write_filepath):
                     in_y_values.append(dataframe['IKIGAI level to not use IRIS'][row])
 
         fig, ax = plt.subplots()
-        ax.scatter(ap_x_values, ap_y_values)
-        ax.scatter(in_x_values, in_y_values)
+        ax.scatter(ap_x_values, ap_y_values, alpha=0.5)
+        ax.scatter(in_x_values, in_y_values, alpha=0.5)
         plt.grid()
         plt.gcf().autofmt_xdate()
         ax.xaxis.set_major_formatter(dates.DateFormatter('%H:%M'))
@@ -94,7 +94,7 @@ def load_and_write_data(read_filepath, write_filepath):
                 x_time_labels.append(datetime.combine(datetime.today(), dataframe['StartDate'][row].time()))
 
         fig, ax = plt.subplots()
-        ax.scatter(x_time_labels, y_activity_labels)
+        ax.scatter(x_time_labels, y_activity_labels, alpha=0.5)
         plt.tick_params(rotation=45)
         plt.gcf().autofmt_xdate()
         ax.xaxis.set_major_formatter(dates.DateFormatter('%H:%M'))
@@ -114,7 +114,7 @@ def load_and_write_data(read_filepath, write_filepath):
                         y_activity_labels.append(activity)
                         x_corresponding_ikigai_level.append(dataframe['IKIGAI level to use IRIS'][row])
 
-        plt.scatter(x_corresponding_ikigai_level, y_activity_labels)
+        plt.scatter(x_corresponding_ikigai_level, y_activity_labels, alpha=0.5)
         plt.xlabel('How much current activity affects IKIGAI %')
         plt.grid()
         plt.savefig('IRIS_activity_vs_ikigai_level.png')
@@ -174,17 +174,18 @@ def load_and_write_data(read_filepath, write_filepath):
                     if key in Q7list:
                         no_person_freq_dict[key] = no_person_freq_dict[key]+1
 
-        plt.bar(yes_person_freq_dict.keys(), yes_person_freq_dict.values(), color='green', width=0.3)
+
+
+        plt.bar(yes_person_freq_dict.keys(), yes_person_freq_dict.values(), color='blue', width=0.3)
         plt.title('IRIS use count vs who you are with')
-        plt.grid()
         plt.tick_params(rotation=45)
         plt.ylabel('Number of times')
+        plt.savefig('Iris use yes and no graph.png')
         plt.savefig('Persons and IRIS_use.png')
         plt.show()
 
-        plt.bar(no_person_freq_dict.keys(), no_person_freq_dict.values(), color='red', width=0.3)
+        plt.bar(no_person_freq_dict.keys(), no_person_freq_dict.values(), color='orange', width=0.3)
         plt.title('no IRIS use vs who you are with')
-        plt.grid()
         plt.tick_params(rotation=45)
         plt.ylabel('Number of times')
         plt.savefig('Persons and NO IRIS_use.png')
@@ -224,13 +225,14 @@ def load_and_write_data(read_filepath, write_filepath):
             for activity in IRIS_activity_to_person_dict.keys():
                 text = IRIS_activity_to_person_dict[activity][person_to_index_dict[person]]
                 if text != 0:
-                    plt.plot(person, activity,  'go', label='marker only')
+                    plt.scatter(person, activity, s=int(text)*100, c = 40, marker='o', alpha=0.5)
                     plt.annotate(text, (person, activity))
 
         plt.grid()
         plt.title('who are you with vs desired IRIS activity')
         plt.savefig('who are you with vs IRIS activity.png')
         plt.show()
+
 
     things_To_or_Not(df)
     graded_IKIGAI_activities(df)
@@ -244,9 +246,7 @@ def load_and_write_data(read_filepath, write_filepath):
     who_are_you_with_vs_IRIS_usecounts_plots(df)
     IRIS_activity_vs_who_are_you_with(df)
 
-
     df.to_excel(write_filepath)
-
 
 analytics_read_file = "C:\\Users\gosho\OneDrive\Desktop\R-HouseFiles\Expert+Panel-+Life+with+IRIS_July+17,+2023_09.50\Expert Panel- Life with IRIS_July 17, 2023_09.50.xlsx"
 analytics_write_file = "C:\\Users\gosho\OneDrive\Desktop\R-HouseFiles\Expert+Panel-+Life+with+IRIS_July+17,+2023_09.50\Expert Panel- Life with IRIS_July 17-processed.xlsx"
