@@ -7,6 +7,7 @@ import random
 import seaborn as sns
 import matplotlib.dates as md
 
+
 def load_and_write_data(read_filepath, write_filepath):
     df = pd.read_excel(read_filepath)
     to_keep = ['StartDate', 'RecipientLastName', 'RecipientFirstName', 'Q2', 'Q3_1', 'Q16', 'Q4', 'Q7', 'Q8', 'Q9',
@@ -28,6 +29,10 @@ def load_and_write_data(read_filepath, write_filepath):
     df['Appropriate time to use IRIS'] = ""
     df['Inappropriate time to use IRIS'] = ""
     df['Activity and Occasion'] = ""
+
+    SMALL_SIZE = 8
+    MEDIUM_SIZE = 10
+    BIGGER_SIZE = 12
 
     def things_To_or_Not(dataframe):
         for row in dataframe.index:
@@ -76,6 +81,13 @@ def load_and_write_data(read_filepath, write_filepath):
         ax.scatter(ap_x_values, ap_y_values, alpha=0.5)
         ax.scatter(in_x_values, in_y_values, alpha=0.5)
         plt.grid()
+
+        #new changes
+        plt.rc('font', size=SMALL_SIZE)  # controls default text sizes
+        plt.rc('axes', titlesize=SMALL_SIZE)  # fontsize of the axes title
+        plt.rc('axes', labelsize=MEDIUM_SIZE)  # fontsize of the x and y labels
+        #new changes
+
         plt.gcf().autofmt_xdate()
         ax.xaxis.set_major_formatter(dates.DateFormatter('%H:%M'))
         plt.ylabel('Effect on IKIGAI %')
@@ -99,6 +111,11 @@ def load_and_write_data(read_filepath, write_filepath):
         plt.gcf().autofmt_xdate()
         ax.xaxis.set_major_formatter(dates.DateFormatter('%H:%M'))
         plt.grid()
+        # new changes
+        plt.rc('font', size=BIGGER_SIZE)  # controls default text sizes
+        plt.rc('axes', titlesize=BIGGER_SIZE)  # fontsize of the axes title
+        plt.rc('axes', labelsize=BIGGER_SIZE)  # fontsize of the x and y labels
+        # new changes
         plt.savefig('IRIS_activity_vs_time.png')
         plt.show()
 
@@ -182,12 +199,26 @@ def load_and_write_data(read_filepath, write_filepath):
         plt.ylabel('Number of times')
         plt.savefig('Iris use yes and no graph.png')
         plt.savefig('Persons and IRIS_use.png')
+
+        # new changes
+        plt.rc('font', size=BIGGER_SIZE)  # controls default text sizes
+        plt.rc('axes', titlesize=BIGGER_SIZE)  # fontsize of the axes title
+        plt.rc('axes', labelsize=BIGGER_SIZE)  # fontsize of the x and y labels
+        # new changes
+
         plt.show()
 
         plt.bar(no_person_freq_dict.keys(), no_person_freq_dict.values(), color='orange', width=0.3)
         plt.title('no IRIS use vs who you are with')
         plt.tick_params(rotation=45)
         plt.ylabel('Number of times')
+
+        # new changes
+        plt.rc('font', size=BIGGER_SIZE)  # controls default text sizes
+        plt.rc('axes', titlesize=BIGGER_SIZE)  # fontsize of the axes title
+        plt.rc('axes', labelsize=BIGGER_SIZE)  # fontsize of the x and y labels
+        # new changes
+
         plt.savefig('Persons and NO IRIS_use.png')
         plt.show()
 
@@ -229,6 +260,15 @@ def load_and_write_data(read_filepath, write_filepath):
                     plt.annotate(text, (person, activity))
 
         plt.grid()
+
+        #new changes
+        plt.rc('font', size=BIGGER_SIZE)  # controls default text sizes
+        plt.rc('axes', titlesize=BIGGER_SIZE)  # fontsize of the axes title
+        plt.rc('axes', labelsize=BIGGER_SIZE)  # fontsize of the x and y labels
+        plt.rc('xtick', labelsize=BIGGER_SIZE)  # fontsize of the tick labels
+        plt.rc('ytick', labelsize=BIGGER_SIZE)  # fontsize of the tick labels
+        #new changes
+
         plt.title('who are you with vs desired IRIS activity')
         plt.savefig('who are you with vs IRIS activity.png')
         plt.show()
