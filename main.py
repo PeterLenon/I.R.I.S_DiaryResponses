@@ -1,12 +1,6 @@
 import pandas as pd
-import matplotlib.pyplot as plt
 from matplotlib import pyplot as plt, dates
 from datetime import datetime
-import numpy as np
-import random
-import seaborn as sns
-import matplotlib.dates as md
-
 
 def load_and_write_data(read_filepath, write_filepath):
     df = pd.read_excel(read_filepath)
