@@ -82,11 +82,9 @@ def load_and_write_data(read_filepath, write_filepath):
         ax.scatter(in_x_values, in_y_values, alpha=0.5)
         plt.grid()
 
-        #new changes
         plt.rc('font', size=SMALL_SIZE)  # controls default text sizes
         plt.rc('axes', titlesize=SMALL_SIZE)  # fontsize of the axes title
         plt.rc('axes', labelsize=MEDIUM_SIZE)  # fontsize of the x and y labels
-        #new changes
 
         plt.gcf().autofmt_xdate()
         ax.xaxis.set_major_formatter(dates.DateFormatter('%H:%M'))
@@ -200,11 +198,9 @@ def load_and_write_data(read_filepath, write_filepath):
         plt.savefig('Iris use yes and no graph.png')
         plt.savefig('Persons and IRIS_use.png')
 
-        # new changes
         plt.rc('font', size=BIGGER_SIZE)  # controls default text sizes
         plt.rc('axes', titlesize=BIGGER_SIZE)  # fontsize of the axes title
         plt.rc('axes', labelsize=BIGGER_SIZE)  # fontsize of the x and y labels
-        # new changes
 
         plt.show()
 
@@ -261,13 +257,11 @@ def load_and_write_data(read_filepath, write_filepath):
 
         plt.grid()
 
-        #new changes
         plt.rc('font', size=BIGGER_SIZE)  # controls default text sizes
         plt.rc('axes', titlesize=BIGGER_SIZE)  # fontsize of the axes title
         plt.rc('axes', labelsize=BIGGER_SIZE)  # fontsize of the x and y labels
         plt.rc('xtick', labelsize=BIGGER_SIZE)  # fontsize of the tick labels
         plt.rc('ytick', labelsize=BIGGER_SIZE)  # fontsize of the tick labels
-        #new changes
 
         plt.title('who are you with vs desired IRIS activity')
         plt.savefig('who are you with vs IRIS activity.png')
