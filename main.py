@@ -1,6 +1,7 @@
 import pandas as pd
 from matplotlib import pyplot as plt, dates
 from datetime import datetime
+import numpy as np
 
 def load_and_write_data(read_filepath, write_filepath):
     df = pd.read_excel(read_filepath)
@@ -182,8 +183,6 @@ def load_and_write_data(read_filepath, write_filepath):
                 for key in no_person_freq_dict:
                     if key in Q7list:
                         no_person_freq_dict[key] = no_person_freq_dict[key]+1
-
-
 
         plt.bar(yes_person_freq_dict.keys(), yes_person_freq_dict.values(), color='blue', width=0.3)
         plt.title('IRIS use count vs who you are with')
