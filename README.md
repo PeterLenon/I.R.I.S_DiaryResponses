@@ -47,4 +47,4 @@ We welcome contributions from the community! If you'd like to contribute to Trad
 
 ## Contact
 - goshomip@gmail.com or https://web.groupme.com/contact/103653571/4OWCyvi9
-- Thank you for your interest in ParknGo_ComputerVision. We hope you find it useful and we look forward to your contributions.
+- Thank you for your interest in I.R.I.S_DiaryResponses. We hope you find it useful and we look forward to your contributions.
